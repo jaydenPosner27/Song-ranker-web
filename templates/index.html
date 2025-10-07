@@ -5,7 +5,11 @@
     </head>
     <body>
         <h1>Song Ranker</h1>
-        <form action = "/songs" method = "post">
+
+        {% if failed %}
+            <p>Something went wrong. Try again.</p>
+            {% endif %}
+        <form action = "/start" method = "post">
             <label>Enter the name of artist/band</label>
             <input type="text" name="artist"><br><br>
             <label>Enter the name of an album</label>

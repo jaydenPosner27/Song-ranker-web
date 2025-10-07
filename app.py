@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request
+from flask import session
 import requests
 import string
 
 app = Flask(__name__)
 API_KEY = "ad1178859688fbab3634d9904e6c3273"
+app.secret_key = "THIS IS MY RANDOM KEEEEYYYY"
 
 def getSongs(artist, album):
     url = "https://ws.audioscrobbler.com/2.0/"
@@ -15,18 +17,23 @@ def getSongs(artist, album):
         return []
     retList = []
     for song in songData:
-        retList.append(song["name"])
+        temp = {"title":song["name"], "category":"", "rating":-1}
+        retList.append(temp)
     return retList
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return render_template("index.html", failed = False)
 
-@app.route("/songs", methods=["POST"])
+@app.route("/start", methods=["POST"])
 def songs():
     artist = request.form["artist"]
     album = request.form["album"]
-    song_list = getSongs(artist,album)
+    session["songList"] = getSongs(artist,album)
+    session["songIndex"] = 0
+    if not session["songList"]:
+        return render_template("index.html", failed=True)
+    return render_template("rank.html", title = session["songList"][session["songIndex"]]["title"])
 
 
 if __name__ == "__main__":
