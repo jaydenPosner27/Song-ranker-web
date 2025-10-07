@@ -2,7 +2,6 @@ import requests
 import string
 
 
-
 API_KEY = "ad1178859688fbab3634d9904e6c3273"
 
 def normalize(title):
