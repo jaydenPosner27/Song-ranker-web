@@ -29,6 +29,8 @@ def home():
 def songs():
     artist = request.form["artist"]
     album = request.form["album"]
+    session["artist"] = artist
+    session["album"] = album
     session["songList"] = getSongs(artist,album)
     session["songIndex"] = 0
     if not session["songList"]:
