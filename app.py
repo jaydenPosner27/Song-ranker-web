@@ -17,7 +17,7 @@ def getSongs(artist, album):
         return []
     retList = []
     for song in songData:
-        temp = {"title":song["name"], "category":"", "rating":-1}
+        temp = {"title":song["name"], "rating":-1}
         retList.append(temp)
     return retList
 
@@ -26,27 +26,50 @@ def home():
     return render_template("index.html", failed = False)
 
 @app.route("/start", methods=["POST"])
-def songs():
+def start():
     artist = request.form["artist"]
     album = request.form["album"]
     session["artist"] = artist
     session["album"] = album
-    session["songList"] = getSongs(artist,album)
     session["songIndex"] = 0
-    print(len(session["songList"]))
+    session["songList"] = getSongs(artist,album)
+    session["categories"]={"great":[], "mid":[], "bad":[]}
+
     if not session["songList"]:
         return render_template("index.html", failed=True)
-    return render_template("rank.html", title = session["songList"][session["songIndex"]]["title"])
+    
+    return render_template("rank.html", title=session["songList"][session["songIndex"]]["title"])
 
 @app.route("/rank", methods=["POST"])
 def rank():
-    print(session["songIndex"])
-    session["songList"][session["songIndex"]]["category"]=request.form["choice"]
-    session["songIndex"] += 1
+    choice = request.form["choice"]
+    currSong = session["songList"][session["songIndex"]]
+    currSong["category"]=choice
+
+    if(len(session["categories"][choice])==0):
+        session["categories"][choice].append(currSong)
+        session["songIndex"]+=1
+        currSong = session["songList"][session["songIndex"]]
+        return render_template("rank.html", title = currSong["title"])
+    else:
+        session["min"]=0
+        session["max"]=len(session["categories"][choice])
+        session["midpoint"]=(int)((session["min"]+session["max"])/2)
+        session["currCat"]=session["categories"][choice]
+        return render_template("sort.html", current=currSong["title"], middle=session["currCat"][session["midpoint"]]["title"])
+    
     if session["songIndex"]==len(session["songList"]):
         return render_template("final.html")
+    
     return render_template("rank.html", title = session["songList"][session["songIndex"]]["title"])
 
+@app.route("/sort", methods=["POST"])
+def sort():
+    print()
+
+def binaryInsert(songToInsert, listCategory):
+    print()
+        
 
 if __name__ == "__main__":
     app.run(debug=True)
