@@ -33,8 +33,18 @@ def songs():
     session["album"] = album
     session["songList"] = getSongs(artist,album)
     session["songIndex"] = 0
+    print(len(session["songList"]))
     if not session["songList"]:
         return render_template("index.html", failed=True)
+    return render_template("rank.html", title = session["songList"][session["songIndex"]]["title"])
+
+@app.route("/rank", methods=["POST"])
+def rank():
+    print(session["songIndex"])
+    session["songList"][session["songIndex"]]["category"]=request.form["choice"]
+    session["songIndex"] += 1
+    if session["songIndex"]==len(session["songList"]):
+        return render_template("final.html")
     return render_template("rank.html", title = session["songList"][session["songIndex"]]["title"])
 
 
