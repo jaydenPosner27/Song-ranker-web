@@ -56,7 +56,8 @@ def rank():
         session["max"]=len(session["categories"][choice])
         session["midpoint"]=(int)((session["min"]+session["max"])/2)
         session["currCat"]=session["categories"][choice]
-        return render_template("sort.html", current=currSong["title"], middle=session["currCat"][session["midpoint"]]["title"])
+         
+        return render_template("sort.html", current=session["songList"][session["songIndex"]]["title"], middle=session["currCat"][session["midpoint"]]["title"])
     
     if session["songIndex"]==len(session["songList"]):
         return render_template("final.html")
@@ -65,7 +66,18 @@ def rank():
 
 @app.route("/sort", methods=["POST"])
 def sort():
-    print()
+    choice = request.form["pick"]
+    if(choice=="curr"):
+        session["max"]=session["midpoint"]-1
+        session["midpoint"]=(int)((session["max"]+session["min"])/2)
+        if(session["min"]>session["max"]):
+            session["currCat"].insert(session["min"], session["songList"][session["songIndex"]]["title"])
+            session["songIndex"] += 1
+            return render_template("rank.html", title=session["songList"][session["songIndex"]]["title"])
+        return render_template("sort.html", current=session["songList"][session["songIndex"]]["title"], middle=session["currCat"][session["midpoint"]]["title"])
+    
+
+
 
 def binaryInsert(songToInsert, listCategory):
     print()

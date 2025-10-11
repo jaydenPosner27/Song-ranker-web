@@ -38,7 +38,7 @@ def compare(allSongs, rankedSongs):
             choice = input(songs + " or " + rankedSongs[category][i] + "? ")
             if normalize(choice) == normalize(songs):
                 max = i -1
-                #print(str(min) + " " + str(max) + " " + str(i))       
+                #print(str(min) + " " + str(max) + " " + str(i))
             elif normalize(choice) == normalize(rankedSongs[category][i]):
                 min = i + 1
                 #print(str(min) + " " + str(max) + " " + str(i))
@@ -65,7 +65,7 @@ def sort(sortedList):
         for songs in sortedList[buckets]:
             sortedList["scores"].append(int(max-weight*i))
             i= i + 1
-
+            
 
 artistName = input("You will enter the name of a music artist, and one of their albums, then rank the songs. First, enter in the name of the artist whose album you want to rank\n")
 albumName=input("Now enter the name of the album\n")
