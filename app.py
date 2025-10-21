@@ -46,8 +46,10 @@ def rank():
     currSong = session["songList"][session["songIndex"]]
     currSong["category"]=choice
     session["songIndex"]+=1
+    if session["songIndex"]>=len(session["songList"]):
+        return render_template("sort.html")
     return render_template("rank.html", title=session["songList"][session["songIndex"]]["title"])
-
+'''
     if(len(session["categories"][choice])==0):
         session["categories"][choice].append(currSong)
         session["songIndex"]+=1
@@ -65,7 +67,7 @@ def rank():
         return render_template("final.html")
     
     return render_template("rank.html", title = session["songList"][session["songIndex"]]["title"])
-'''
+
 @app.route("/sort", methods=["POST"])
 def sort():
     choice = request.form["pick"]
