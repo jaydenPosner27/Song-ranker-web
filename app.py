@@ -45,6 +45,8 @@ def rank():
     choice = request.form["choice"]
     currSong = session["songList"][session["songIndex"]]
     currSong["category"]=choice
+    session["songIndex"]+=1
+    return render_template("rank.html", title=session["songList"][session["songIndex"]]["title"])
 
     if(len(session["categories"][choice])==0):
         session["categories"][choice].append(currSong)
@@ -63,7 +65,7 @@ def rank():
         return render_template("final.html")
     
     return render_template("rank.html", title = session["songList"][session["songIndex"]]["title"])
-
+'''
 @app.route("/sort", methods=["POST"])
 def sort():
     choice = request.form["pick"]
@@ -75,13 +77,6 @@ def sort():
             session["songIndex"] += 1
             return render_template("rank.html", title=session["songList"][session["songIndex"]]["title"])
         return render_template("sort.html", current=session["songList"][session["songIndex"]]["title"], middle=session["currCat"][session["midpoint"]]["title"])
-    
-
-
-
-def binaryInsert(songToInsert, listCategory):
-    print()
-        
-
+'''
 if __name__ == "__main__":
     app.run(debug=True)
