@@ -1,13 +1,42 @@
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <!DOCTYPE html>
 <html>
     <head>
         <title>Sorting...</title>
     </head>
     <body>
-        <h1>Choose which of the two songs you prefer</h1>
-        <form action="/sort" method="post">
-            <button type="submit" name ="pick" value="curr">{{current}}</button>
-            <button type="submit" name = "pick" value="other">{{middle}}</button>
-        </form>
+        <h1>Sort all the songs in their categories</h1>
+        <h2>Good Songs</h2>
+            <ul id="good-list">
+                {% for song in categories["great"] %}
+                <li>{{ song["title"] }}</li>
+                {% endfor %}
+            </ul>
+
+        <h2>Mid Songs</h2>
+            <ul id="mid-list">
+                {% for song in categories["mid"] %}
+                <li>{{ song["title"] }}</li>
+                {% endfor %}
+            </ul>
+
+        <h2>Bad Songs</h2>
+            <ul id="bad-list">
+                {% for song in categories["bad"] %}
+                <li>{{ song["title"] }}</li>
+                {% endfor %}
+            </ul>
+        <script>
+            const lists = ["good-list","mid-list","bad-list"];
+            function makeMovable(id){
+                let element = document.getElementById(id);
+                new Sortable(element, {
+                    animation: 150,
+                    ghostClass: 'blue-background.class'
+                });
+            }
+            lists.forEach(makeMovable)
+
+        </script>
     </body>
 </html>
